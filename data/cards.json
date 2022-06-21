@@ -1,0 +1,12 @@
+[
+  {
+    "Id": "0001",
+    "Name": "Card01",
+    "ImgFilename": "image01.jpg"
+  },
+  {
+    "Id": "0002",
+    "Name": "Card02",
+    "ImgFilename": "image02.png"
+  }
+]
