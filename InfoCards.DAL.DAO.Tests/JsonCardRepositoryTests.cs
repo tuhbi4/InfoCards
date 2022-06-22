@@ -44,7 +44,7 @@ namespace InfoCards.DAL.DAO.Tests
         {
             // Arrange
             var jsonCardRepository = CreateJsonCardRepository();
-            Card dataObject = new Card { Id = 999, ImgFilename = "TestImgFileName.jpg", Name = "TestName" };
+            InfoCard dataObject = new InfoCard { Id = 999, ImgFilename = "TestImgFileName.jpg", Name = "TestName" };
 
             // Act
             jsonCardRepository.ReadAll();
@@ -62,7 +62,7 @@ namespace InfoCards.DAL.DAO.Tests
         {
             // Arrange
             var jsonCardRepository = CreateJsonCardRepository();
-            Card dataObject = new Card { Id = 999, ImgFilename = "TestImgFileName.jpg", Name = "TestName" };
+            InfoCard dataObject = new InfoCard { Id = 999, ImgFilename = "TestImgFileName.jpg", Name = "TestName" };
             int id = 999;
 
             // Act
@@ -81,8 +81,8 @@ namespace InfoCards.DAL.DAO.Tests
         {
             // Arrange
             var jsonCardRepository = CreateJsonCardRepository();
-            Card dataObject = new Card { Id = 999, ImgFilename = "TestImgFileName.jpg", Name = "TestName" };
-            Card dataObjectUpdated = new Card { Id = 999, ImgFilename = "newTestImgFileName.jpg", Name = "NewTestName" };
+            InfoCard dataObject = new InfoCard { Id = 999, ImgFilename = "TestImgFileName.jpg", Name = "TestName" };
+            InfoCard dataObjectUpdated = new InfoCard { Id = 999, ImgFilename = "newTestImgFileName.jpg", Name = "NewTestName" };
             int id = 999;
 
             // Act
@@ -102,7 +102,7 @@ namespace InfoCards.DAL.DAO.Tests
         {
             // Arrange
             var jsonCardRepository = CreateJsonCardRepository();
-            Card dataObject = new Card { Id = 999, ImgFilename = "TestImgFileName.jpg", Name = "TestName" };
+            InfoCard dataObject = new InfoCard { Id = 999, ImgFilename = "TestImgFileName.jpg", Name = "TestName" };
 
             // Act
             jsonCardRepository.ReadAll();
@@ -121,7 +121,7 @@ namespace InfoCards.DAL.DAO.Tests
         {
             // Arrange
             var jsonCardRepository = CreateJsonCardRepository();
-            Card dataObject = new Card { Id = 999, ImgFilename = "TestImgFileName.jpg", Name = "TestName" };
+            InfoCard dataObject = new InfoCard { Id = 999, ImgFilename = "TestImgFileName.jpg", Name = "TestName" };
 
             // Act
             jsonCardRepository.ReadAll();

@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace InfoCards.DAL.DAO
 {
-    public class JsonCardRepository : IRepository<Card>
+    public class JsonCardRepository : IRepository<InfoCard>
     {
-        private List<Card> Items { get; set; }
+        private List<InfoCard> Items { get; set; }
 
         private readonly string jsonFilePath;
         private readonly ISerializer jsonSerializer;
@@ -15,7 +15,7 @@ namespace InfoCards.DAL.DAO
 
         public JsonCardRepository(ISerializer jsonSerializer, IDeserializer jsonDeserializer, string jsonFilePath)
         {
-            Items = new List<Card>();
+            Items = new List<InfoCard>();
             this.jsonSerializer = jsonSerializer;
             this.jsonDeserializer = jsonDeserializer;
             this.jsonFilePath = jsonFilePath;
@@ -23,25 +23,25 @@ namespace InfoCards.DAL.DAO
 
         public void ReadAll()
         {
-            Items = jsonDeserializer.GetData<Card>(jsonFilePath);
+            Items = jsonDeserializer.GetData<InfoCard>(jsonFilePath);
         }
 
-        public List<Card> GetAll()
+        public List<InfoCard> GetAll()
         {
             return Items;
         }
 
-        public void Create(Card dataObject)
+        public void Create(InfoCard dataObject)
         {
             Items.Add(dataObject);
         }
 
-        public Card Read(int id)
+        public InfoCard Read(int id)
         {
             return Items.FirstOrDefault(x => x.Id == id);
         }
 
-        public void Update(Card dataObject)
+        public void Update(InfoCard dataObject)
         {
             Items.Insert(Items.IndexOf(Read(dataObject.Id)), dataObject);
         }

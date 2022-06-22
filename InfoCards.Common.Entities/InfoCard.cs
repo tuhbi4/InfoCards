@@ -1,6 +1,6 @@
 ﻿namespace InfoCards.Common.Entities
 {
-    public class Card
+    public class InfoCard
     {
         public int Id { get; set; }
 
