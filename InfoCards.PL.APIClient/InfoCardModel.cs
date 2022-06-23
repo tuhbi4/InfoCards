@@ -1,6 +1,6 @@
-﻿namespace InfoCards.Common.Entities
+﻿namespace InfoCards.PL.APIClient
 {
-    public class InfoCard
+    public class InfoCardModel
     {
         public int Id { get; set; }
 

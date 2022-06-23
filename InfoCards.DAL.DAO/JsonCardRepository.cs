@@ -43,12 +43,13 @@ namespace InfoCards.DAL.DAO
 
         public void Update(InfoCard dataObject)
         {
-            Items.Insert(Items.IndexOf(Read(dataObject.Id)), dataObject);
+            Items.Remove(Items.FirstOrDefault(x => x.Id == dataObject.Id));
+            Items.Add(dataObject);
         }
 
         public void Delete(int id)
         {
-            Items.Remove(Read(id));
+            Items.Remove(Items.FirstOrDefault(x => x.Id == id));
         }
 
         public void Save()
