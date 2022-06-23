@@ -1,7 +1,6 @@
 ﻿using InfoCards.Common.Entities;
 using InfoCards.DAL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 
 namespace InfoCards.BLL.API.Controllers
@@ -11,96 +10,120 @@ namespace InfoCards.BLL.API.Controllers
     public class InfoCardController : ControllerBase
     {
         private readonly IRepository<InfoCard> _cardRepository;
-        private readonly ILogger<InfoCardController> _logger;
 
-        public InfoCardController(IRepository<InfoCard> cardRepository, ILogger<InfoCardController> logger)
+        public InfoCardController(IRepository<InfoCard> cardRepository)
         {
             _cardRepository = cardRepository;
-            _logger = logger;
         }
 
-        //Get all infocards
-        //api/infoCards
+        //Get all InfoCards
+        //GET: api/InfoCard
         [HttpGet]
         public IActionResult Get()
         {
-            _cardRepository.ReadAll();
-            IEnumerable<InfoCard> infoCards = _cardRepository.GetAll();
-            return Ok(infoCards);
+            if (ModelState.IsValid)
+            {
+                _cardRepository.ReadAll();
+                IEnumerable<InfoCard> infoCards = _cardRepository.GetAll();
+
+                return Ok(infoCards);
+            }
+
+            return BadRequest("Validation error");
         }
 
-        //Get infocard by Id
-        //Get: api/infoCard/3
+        //Get InfoCard by Id
+        //GET: api/InfoCard/3
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
-            _cardRepository.ReadAll();
-            InfoCard infoCard = _cardRepository.Read(id);
-
-            if (infoCard == null)
+            if (ModelState.IsValid)
             {
-                return NotFound("InfoCard record could not be found");
+                _cardRepository.ReadAll();
+                InfoCard infoCard = _cardRepository.Read(id);
+
+                if (infoCard == null)
+                {
+                    return NotFound("InfoCard record could not be found");
+                }
+
+                return Ok(infoCard);
             }
 
-            return Ok(infoCard);
+            return BadRequest("Validation error");
         }
 
-        //Post: api/infoCard
+        //POST: api/InfoCard
         [HttpPost]
         public IActionResult Post([FromBody] InfoCard infoCard)
         {
-            _cardRepository.ReadAll();
-
-            if (infoCard == null)
+            if (ModelState.IsValid)
             {
-                return BadRequest("InfoCard is Null");
+                _cardRepository.ReadAll();
+
+                if (infoCard == null)
+                {
+                    return BadRequest("InfoCard is Null");
+                }
+
+                _cardRepository.Create(infoCard);
+                _cardRepository.Save();
+
+                return CreatedAtRoute("Get", new { Id = infoCard.Id }, infoCard);
             }
 
-            _cardRepository.Create(infoCard);
-            _cardRepository.Save(); // perhaps a response code is needed?
-
-            return CreatedAtRoute("Get", new { Id = infoCard.Id }, infoCard);
+            return BadRequest("Validation error");
         }
 
-        //PUT: /infoCard/3
+        //PUT: /InfoCard/3
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] InfoCard infoCard)
         {
-            _cardRepository.ReadAll();
-
-            if (infoCard == null)
+            if (ModelState.IsValid)
             {
-                return BadRequest("InfoCard is Null");
+                _cardRepository.ReadAll();
+
+                if (infoCard == null)
+                {
+                    return BadRequest("InfoCard is Null");
+                }
+
+                if (_cardRepository.Read(id) == null)
+                {
+                    return NotFound("InfoCard record could not be found");
+                }
+
+                infoCard.Id = id;
+                _cardRepository.Update(infoCard);
+                _cardRepository.Save();
+
+                return Ok(infoCard);
             }
 
-            if (_cardRepository.Read(id) == null)
-            {
-                return NotFound("InfoCard record could not be found");
-            }
-
-            infoCard.Id = id;
-            _cardRepository.Update(infoCard);
-            _cardRepository.Save(); // perhaps a response code is needed?
-
-            return Ok(infoCard);
+            return BadRequest("Validation error");
         }
 
-        //Delete: /infoCard/3
+        //DELETE: /InfoCard/3
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _cardRepository.ReadAll();
-            InfoCard infoCard = _cardRepository.Read(id);
-
-            if (infoCard == null)
+            if (ModelState.IsValid)
             {
-                return NotFound("InfoCard record could not be found");
+                _cardRepository.ReadAll();
+                InfoCard infoCard = _cardRepository.Read(id);
+
+                if (infoCard == null)
+                {
+                    return NotFound("InfoCard record could not be found");
+                }
+
+                _cardRepository.Delete(id);
+                _cardRepository.Save();
+
+                return Ok(infoCard);
             }
 
-            _cardRepository.Delete(id);
-            _cardRepository.Save(); // perhaps a response code is needed?
-
-            return Ok(infoCard);
+            return BadRequest("Validation error");
         }
     }
 }
