@@ -1,60 +1,75 @@
 ﻿using InfoCards.Common.Entities;
 using InfoCards.DAL.Interfaces;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace InfoCards.DAL.DAO
 {
     public class JsonCardRepository : IRepository<InfoCard>
     {
-        private List<InfoCard> Items { get; set; }
-
         private readonly string jsonFilePath;
-        private readonly ISerializer jsonSerializer;
-        private readonly IDeserializer jsonDeserializer;
 
-        public JsonCardRepository(ISerializer jsonSerializer, IDeserializer jsonDeserializer, string jsonFilePath)
+        public JsonCardRepository(string jsonFilePath)
         {
-            Items = new List<InfoCard>();
-            this.jsonSerializer = jsonSerializer;
-            this.jsonDeserializer = jsonDeserializer;
             this.jsonFilePath = jsonFilePath;
-        }
-
-        public void ReadAll()
-        {
-            Items = jsonDeserializer.GetData<InfoCard>(jsonFilePath);
         }
 
         public List<InfoCard> GetAll()
         {
-            return Items;
+            List<InfoCard> itemList = ReadFromFile();
+
+            return itemList;
         }
 
         public void Create(InfoCard dataObject)
         {
-            Items.Add(dataObject);
+            List<InfoCard> itemList = ReadFromFile();
+
+            itemList.Add(dataObject);
+
+            SaveToFile(itemList);
         }
 
         public InfoCard Read(int id)
         {
-            return Items.FirstOrDefault(x => x.Id == id);
+            List<InfoCard> itemList = ReadFromFile();
+
+            return itemList.FirstOrDefault(x => x.Id == id);
         }
 
         public void Update(InfoCard dataObject)
         {
-            Items.Remove(Items.FirstOrDefault(x => x.Id == dataObject.Id));
-            Items.Add(dataObject);
+            List<InfoCard> itemList = ReadFromFile();
+
+            itemList.Remove(itemList.FirstOrDefault(x => x.Id == dataObject.Id));
+            itemList.Add(dataObject);
+
+            SaveToFile(itemList);
         }
 
         public void Delete(int id)
         {
-            Items.Remove(Items.FirstOrDefault(x => x.Id == id));
+            List<InfoCard> itemList = ReadFromFile();
+
+            itemList.Remove(itemList.FirstOrDefault(x => x.Id == id));
+
+            SaveToFile(itemList);
         }
 
-        public void Save()
+        private List<InfoCard> ReadFromFile()
         {
-            jsonSerializer.SaveData(jsonFilePath, Items);
+            string fiileString = File.ReadAllText(jsonFilePath);
+            List<InfoCard> itemList = JsonConvert.DeserializeObject<List<InfoCard>>(fiileString);
+
+            return itemList;
+        }
+
+        private void SaveToFile(List<InfoCard> itemList)
+        {
+            string jsonString = JsonConvert.SerializeObject(itemList, Formatting.Indented);
+            File.WriteAllText(jsonFilePath, jsonString);
         }
     }
 }

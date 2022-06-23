@@ -1,5 +1,4 @@
 ﻿using InfoCards.Common.Entities;
-using InfoCards.DAL.Interfaces;
 using Moq;
 using NUnit.Framework;
 
@@ -12,26 +11,19 @@ namespace InfoCards.DAL.DAO.Tests
 
         private MockRepository mockRepository;
 
-        private Mock<ISerializer> mockSerializer;
-        private Mock<IDeserializer> mockDeserializer;
-
         [SetUp]
         public void SetUp()
         {
             mockRepository = new MockRepository(MockBehavior.Strict);
-
-            mockSerializer = mockRepository.Create<ISerializer>();
-            mockDeserializer = mockRepository.Create<IDeserializer>();
         }
 
         [Test]
         public void GetAll_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var jsonCardRepository = CreateJsonCardRepository();
+            var jsonCardRepository = new JsonCardRepository(JsonPath);
 
             // Act
-            jsonCardRepository.ReadAll();
             var result = jsonCardRepository.GetAll();
 
             // Assert
@@ -43,104 +35,82 @@ namespace InfoCards.DAL.DAO.Tests
         public void Create_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var jsonCardRepository = CreateJsonCardRepository();
-            InfoCard dataObject = new InfoCard { Id = 999, Name = "TestName", ImageBase64 = "/9j/4QAYRXhpZgAASUkqAAgyvptUWk661UQ70A0oj/2Q==", };
+            int id = 199;
+            var jsonCardRepository = new JsonCardRepository(JsonPath);
+            InfoCard dataObject = new InfoCard { Id = id, Name = "TestName", ImageBase64 = "/9j/4QAYRXhpZgAASUkqAAgyvptUWk661UQ70A0oj/2Q==", };
 
             // Act
-            jsonCardRepository.ReadAll();
             var startItemCount = jsonCardRepository.GetAll().Count;
             jsonCardRepository.Create(dataObject);
             var endItemCount = jsonCardRepository.GetAll().Count;
 
             // Assert
-            Assert.True(startItemCount + 1 == endItemCount);
+            Assert.AreEqual(startItemCount + 1, endItemCount);
             mockRepository.VerifyAll();
+            jsonCardRepository.Delete(id);
         }
 
         [Test]
         public void Read_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var jsonCardRepository = CreateJsonCardRepository();
-            InfoCard dataObject = new InfoCard { Id = 999, Name = "TestName", ImageBase64 = "/9j/4QAYRXhpZgAASUkqAAgyvptUWk661UQ70A0oj/2Q==", };
-            int id = 999;
+            int id = 299;
+            var jsonCardRepository = new JsonCardRepository(JsonPath);
+            InfoCard dataObject = new InfoCard { Id = id, Name = "TestName", ImageBase64 = "/9j/4QAYRXhpZgAASUkqAAgyvptUWk661UQ70A0oj/2Q==", };
 
             // Act
-            jsonCardRepository.ReadAll();
             jsonCardRepository.Create(dataObject);
-            var result = jsonCardRepository.Read(
-                id);
+            var result = jsonCardRepository.Read(id);
 
             // Assert
-            Assert.AreEqual(dataObject, result);
+            Assert.AreEqual(dataObject.Id, result.Id);
+            Assert.AreEqual(dataObject.Name, result.Name);
+            Assert.AreEqual(dataObject.ImageBase64, result.ImageBase64);
             mockRepository.VerifyAll();
+            jsonCardRepository.Delete(id);
         }
 
         [Test]
         public void Update_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var jsonCardRepository = CreateJsonCardRepository();
-            InfoCard dataObject = new InfoCard { Id = 999, Name = "TestName", ImageBase64 = "/9j/4QAYRXhpZgAASUkqAAgyvptUWk661UQ70A0oj/2Q==", };
-            InfoCard dataObjectUpdated = new InfoCard { Id = 999, Name = "NewTestName", ImageBase64 = "/9j/4QAYRXhpZgAASUkqAAgyvptUWk661UQ70A0oj/2Q==", };
-            int id = 999;
+            int id = 399;
+            string Name = "NewTestName";
+            var jsonCardRepository = new JsonCardRepository(JsonPath);
+            InfoCard dataObject = new InfoCard { Id = id, Name = "TestName", ImageBase64 = "/9j/4QAYRXhpZgAASUkqAAgyvptUWk661UQ70A0oj/2Q==", };
+            InfoCard dataObjectUpdated = new InfoCard { Id = id, Name = Name, ImageBase64 = "/9j/4QAYRXhpZgAASUkqAAgyvptUWk661UQ70A0oj/2Q==", };
 
             // Act
-            jsonCardRepository.ReadAll();
             jsonCardRepository.Create(dataObject);
             jsonCardRepository.Update(dataObjectUpdated);
             var result = jsonCardRepository.Read(
                 id);
 
             // Assert
-            Assert.AreEqual(dataObjectUpdated, result);
+            Assert.AreEqual(dataObject.Id, result.Id);
+            Assert.AreEqual(Name, result.Name);
+            Assert.AreEqual(dataObject.ImageBase64, result.ImageBase64);
             mockRepository.VerifyAll();
+            jsonCardRepository.Delete(id);
         }
 
         [Test]
         public void Delete_StateUnderTest_ExpectedBehavior()
         {
             // Arrange
-            var jsonCardRepository = CreateJsonCardRepository();
-            InfoCard dataObject = new InfoCard { Id = 999, Name = "TestName", ImageBase64 = "/9j/4QAYRXhpZgAASUkqAAgyvptUWk661UQ70A0oj/2Q==", };
+            int id = 399;
+            var jsonCardRepository = new JsonCardRepository(JsonPath);
+            InfoCard dataObject = new InfoCard { Id = id, Name = "TestName", ImageBase64 = "/9j/4QAYRXhpZgAASUkqAAgyvptUWk661UQ70A0oj/2Q==", };
 
             // Act
-            jsonCardRepository.ReadAll();
             var startItemCount = jsonCardRepository.GetAll().Count;
             jsonCardRepository.Create(dataObject);
-            jsonCardRepository.Delete(999);
+            jsonCardRepository.Delete(id);
             var endItemCount = jsonCardRepository.GetAll().Count;
 
             // Assert
-            Assert.True(startItemCount == endItemCount);
+            Assert.AreEqual(startItemCount, endItemCount);
             mockRepository.VerifyAll();
-        }
-
-        [Test]
-        public void Save_StateUnderTest_ExpectedBehavior()
-        {
-            // Arrange
-            var jsonCardRepository = CreateJsonCardRepository();
-            InfoCard dataObject = new InfoCard { Id = 999, Name = "TestName", ImageBase64 = "/9j/4QAYRXhpZgAASUkqAAgyvptUWk661UQ70A0oj/2Q==", };
-
-            // Act
-            jsonCardRepository.ReadAll();
-            var startItemList = jsonCardRepository.GetAll().Count;
-            jsonCardRepository.Create(dataObject);
-            jsonCardRepository.Save();
-            jsonCardRepository.ReadAll();
-            var endItemList = jsonCardRepository.GetAll().Count;
-
-            // Assert
-            Assert.True(startItemList + 1 == endItemList);
-            mockRepository.VerifyAll();
-            jsonCardRepository.Delete(999);
-            jsonCardRepository.Save();
-        }
-
-        private JsonCardRepository CreateJsonCardRepository()
-        {
-            return new JsonCardRepository(new JsonSerializer(), new JsonDeserializer(), JsonPath);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace InfoCards.BLL.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                _cardRepository.ReadAll();
+                _cardRepository.GetAll();
                 IEnumerable<InfoCard> infoCards = _cardRepository.GetAll();
 
                 return Ok(infoCards);
@@ -39,7 +39,7 @@ namespace InfoCards.BLL.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                _cardRepository.ReadAll();
+                _cardRepository.GetAll();
                 InfoCard infoCard = _cardRepository.Read(id);
 
                 if (infoCard == null)
@@ -59,7 +59,7 @@ namespace InfoCards.BLL.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                _cardRepository.ReadAll();
+                _cardRepository.GetAll();
 
                 if (infoCard == null)
                 {
@@ -67,7 +67,6 @@ namespace InfoCards.BLL.API.Controllers
                 }
 
                 _cardRepository.Create(infoCard);
-                _cardRepository.Save();
 
                 return CreatedAtRoute("Get", new { Id = infoCard.Id }, infoCard);
             }
@@ -81,7 +80,7 @@ namespace InfoCards.BLL.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                _cardRepository.ReadAll();
+                _cardRepository.GetAll();
 
                 if (infoCard == null)
                 {
@@ -95,7 +94,6 @@ namespace InfoCards.BLL.API.Controllers
 
                 infoCard.Id = id;
                 _cardRepository.Update(infoCard);
-                _cardRepository.Save();
 
                 return Ok(infoCard);
             }
@@ -109,7 +107,7 @@ namespace InfoCards.BLL.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                _cardRepository.ReadAll();
+                _cardRepository.GetAll();
                 InfoCard infoCard = _cardRepository.Read(id);
 
                 if (infoCard == null)
@@ -118,7 +116,6 @@ namespace InfoCards.BLL.API.Controllers
                 }
 
                 _cardRepository.Delete(id);
-                _cardRepository.Save();
 
                 return Ok(infoCard);
             }

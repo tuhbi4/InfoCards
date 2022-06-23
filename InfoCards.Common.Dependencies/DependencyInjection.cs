@@ -11,10 +11,7 @@ namespace InfoCards.Common.Dependencies
 
         public static void InjectDependencies(this IServiceCollection services)
         {
-            services.AddScoped<ISerializer, JsonSerializer>();
-            services.AddScoped<IDeserializer, JsonDeserializer>();
-            services.AddScoped<IRepository<InfoCard>>(x =>
-            new JsonCardRepository(x.GetRequiredService<ISerializer>(), x.GetRequiredService<IDeserializer>(), JsonPath));
+            services.AddScoped<IRepository<InfoCard>>(x => new JsonCardRepository(JsonPath));
         }
     }
 }
