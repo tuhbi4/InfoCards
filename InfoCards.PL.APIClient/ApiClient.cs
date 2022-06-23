@@ -21,6 +21,7 @@ namespace InfoCards.PL.APIClient
         {
             HttpResponseMessage response = await _client.GetAsync("InfoCard");
             response.EnsureSuccessStatusCode();
+
             string responseBody = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<List<InfoCardModel>>(responseBody);
@@ -30,6 +31,7 @@ namespace InfoCards.PL.APIClient
         {
             HttpResponseMessage response = await _client.GetAsync("InfoCard/" + id);
             response.EnsureSuccessStatusCode();
+
             string responseBody = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<InfoCardModel>(responseBody);
@@ -39,6 +41,7 @@ namespace InfoCards.PL.APIClient
         {
             var json = JsonConvert.SerializeObject(infoCardModel);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
+
             var response = await _client.PostAsync("InfoCard", data);
             response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -50,6 +53,7 @@ namespace InfoCards.PL.APIClient
         {
             var json = JsonConvert.SerializeObject(infoCardModel);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
+
             var response = await _client.PutAsync("InfoCard/" + id, data);
             response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();

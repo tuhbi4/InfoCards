@@ -21,15 +21,9 @@ namespace InfoCards.BLL.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            if (ModelState.IsValid)
-            {
-                _cardRepository.GetAll();
-                IEnumerable<InfoCard> infoCards = _cardRepository.GetAll();
+            IEnumerable<InfoCard> infoCards = _cardRepository.GetAll();
 
-                return Ok(infoCards);
-            }
-
-            return BadRequest("Validation error");
+            return Ok(infoCards);
         }
 
         //Get InfoCard by Id
@@ -37,20 +31,14 @@ namespace InfoCards.BLL.API.Controllers
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
-            if (ModelState.IsValid)
+            InfoCard infoCard = _cardRepository.Read(id);
+
+            if (infoCard == null)
             {
-                _cardRepository.GetAll();
-                InfoCard infoCard = _cardRepository.Read(id);
-
-                if (infoCard == null)
-                {
-                    return NotFound("InfoCard record could not be found");
-                }
-
-                return Ok(infoCard);
+                return NotFound("InfoCard record could not be found");
             }
 
-            return BadRequest("Validation error");
+            return Ok(infoCard);
         }
 
         //POST: api/InfoCard
@@ -59,11 +47,14 @@ namespace InfoCards.BLL.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                _cardRepository.GetAll();
-
                 if (infoCard == null)
                 {
                     return BadRequest("InfoCard is Null");
+                }
+
+                if (!InfoCardControllerHelpers.IsBase64String(infoCard.ImageBase64))
+                {
+                    return BadRequest("Image is not Base64");
                 }
 
                 _cardRepository.Create(infoCard);
@@ -80,11 +71,14 @@ namespace InfoCards.BLL.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                _cardRepository.GetAll();
-
                 if (infoCard == null)
                 {
                     return BadRequest("InfoCard is Null");
+                }
+
+                if (!InfoCardControllerHelpers.IsBase64String(infoCard.ImageBase64))
+                {
+                    return BadRequest("Image is not Base64");
                 }
 
                 if (_cardRepository.Read(id) == null)
@@ -105,22 +99,16 @@ namespace InfoCards.BLL.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (ModelState.IsValid)
+            InfoCard infoCard = _cardRepository.Read(id);
+
+            if (infoCard == null)
             {
-                _cardRepository.GetAll();
-                InfoCard infoCard = _cardRepository.Read(id);
-
-                if (infoCard == null)
-                {
-                    return NotFound("InfoCard record could not be found");
-                }
-
-                _cardRepository.Delete(id);
-
-                return Ok(infoCard);
+                return NotFound("InfoCard record could not be found");
             }
 
-            return BadRequest("Validation error");
+            _cardRepository.Delete(id);
+
+            return Ok(infoCard);
         }
     }
 }
