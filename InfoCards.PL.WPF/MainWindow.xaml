@@ -1,0 +1,82 @@
+﻿<Window x:Class="InfoCards.PL.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="InfoCards" Height="1000" Width="1200" MinWidth="300" WindowStartupLocation="CenterScreen">
+    <StackPanel>
+        <StackPanel.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFF9F3F3" Offset="1" />
+                <GradientStop Color="#FF9E9E9E" />
+            </LinearGradientBrush>
+        </StackPanel.Background>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+            <Button Width="50" Click="Uploading_Button_Click" Margin="5">
+                <Button.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFBFBFBF" />
+                        <GradientStop Color="Gray" Offset="1" />
+                    </LinearGradientBrush>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF9E9E9E" />
+                        <GradientStop Color="#FFF9F3F3" Offset="1" />
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Image Source="/icons/uploading.png" Stretch="Uniform" StretchDirection="Both" Visibility="Visible" Opacity="0.7" />
+            </Button>
+            <Button Width="50" Click="Refreshing_Button_Click" Margin="5">
+                <Button.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFBFBFBF" />
+                        <GradientStop Color="Gray" Offset="1" />
+                    </LinearGradientBrush>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF9E9E9E" />
+                        <GradientStop Color="#FFF9F3F3" Offset="1" />
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Image Source="/icons/refreshing.png" Stretch="Uniform" StretchDirection="Both" Visibility="Visible" Opacity="0.7" />
+            </Button>
+            <Button Width="50" Click="Pencil_Tool_Button_Click" Margin="5">
+                <Button.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFBFBFBF" />
+                        <GradientStop Color="Gray" Offset="1" />
+                    </LinearGradientBrush>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF9E9E9E" />
+                        <GradientStop Color="#FFF9F3F3" Offset="1" />
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Image Source="/icons/pencil-tool.png" Stretch="Uniform" StretchDirection="Both" Visibility="Visible" Opacity="0.7" />
+            </Button>
+            <Button Width="50" Click="Trash_Bin_Button_Click" Margin="5">
+                <Button.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFBFBFBF" />
+                        <GradientStop Color="Gray" Offset="1" />
+                    </LinearGradientBrush>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF9E9E9E" />
+                        <GradientStop Color="#FFF9F3F3" Offset="1" />
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Image Source="/icons/trash-bin.png" Stretch="Uniform" StretchDirection="Both" Visibility="Visible" Opacity="0.7" />
+            </Button>
+        </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="900">
+            <WrapPanel x:Name="wrapFrame" Margin="10" HorizontalAlignment="Center" >
+            </WrapPanel>
+        </ScrollViewer>
+    </StackPanel>
+</Window>
